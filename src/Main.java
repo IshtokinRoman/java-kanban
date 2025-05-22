@@ -1,5 +1,5 @@
 import manager.TaskManager;
-import manager.TaskStatus;
+import model.TaskStatus;
 import model.*;
 import java.util.Scanner;
 
