@@ -128,10 +128,6 @@ public class TaskManager {
         epic.removeSubtaskById(id);
         subtasks.remove(id);
 
-        //для проверки статуса без удаленного сабтаска
-        //получается дублирование кода с апдейта сабтаска, не знаю как лучше сделать
-        //если правильно понимаю то лучше вывести в отдельный метод
-        //но по тз нельзя создавать метод отдельно для обновления статуса
         int subtasksDone = 0;
         int subtasksNumber = getSubtasksListByEpic(epic.getId()).size();
 

@@ -26,7 +26,6 @@ public class Epic extends Task {
         subtaskIds.clear();
     }
 
-    //хотелось бы узнать, можно ли так делать или лучше заново переопределить
     @Override
     public String toString() {
         return super.toString().replaceFirst("Task", "Epic") + ", subtaskIds: " + subtaskIds;
