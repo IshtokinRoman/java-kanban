@@ -1,6 +1,9 @@
-import java.util.ArrayList;
+package model;
 
-public class Epic extends Task{
+import java.util.ArrayList;
+import java.util.Objects;
+
+public class Epic extends Task {
     private final ArrayList<Integer> subtaskIds = new ArrayList<>();
 
     public Epic(String title, String description) {
@@ -29,4 +32,16 @@ public class Epic extends Task{
         return super.toString().replaceFirst("Task", "Epic") + ", subtaskIds: " + subtaskIds;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Epic epic = (Epic) o;
+        return Objects.equals(subtaskIds, epic.subtaskIds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), subtaskIds);
+    }
 }

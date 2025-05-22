@@ -1,9 +1,12 @@
+package model;
+
+import manager.TaskStatus;
 import java.util.Objects;
 
 public class Task {
+    protected int id;
     protected final String title;
     protected final String description;
-    protected int id;
     protected TaskStatus status;
 
     public Task(String title, String description) {
@@ -33,12 +36,14 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id;
+        return id == task.id && Objects.equals(title, task.title) &&
+                Objects.equals(description, task.description) &&
+                status == task.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, title, description, status);
     }
 
     @Override
