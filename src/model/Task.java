@@ -5,9 +5,9 @@ import java.util.Objects;
 
 public class Task {
     protected int id;
+    protected TaskStatus status;
     protected final String title;
     protected final String description;
-    protected TaskStatus status;
 
     public Task(String title, String description) {
         this.title = title;
