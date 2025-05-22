@@ -1,0 +1,49 @@
+import java.util.Objects;
+
+public class Task {
+    protected final String title;
+    protected final String description;
+    protected int id;
+    protected TaskStatus status;
+
+    public Task(String title, String description) {
+        this.title = title;
+        this.description = description;
+        status = TaskStatus.NEW;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStatus(TaskStatus taskStatus) {
+        status = taskStatus;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Task id: " + id + ", title: '" + title + "', description: '" +
+                description + "', status: '" + status + "'";
+    }
+}
