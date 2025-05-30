@@ -13,7 +13,6 @@ class InMemoryHistoryManagerTest {
     @Test
     void historyShouldStoreOriginalVersionOfTask() {
         TaskManager taskManager = Managers.getDefault();
-        HistoryManager historyManager = Managers.getDefaultHistory();
 
         Task originalTask = new Task("Task", "desc");
         taskManager.addTask(originalTask);
@@ -24,7 +23,7 @@ class InMemoryHistoryManagerTest {
 
         originalTask.setStatus(TaskStatus.DONE);
         taskManager.updateTask(originalTask);
-        List<Task> history = historyManager.getHistory();
+        List<Task> history = taskManager.getHistory();
 
         Task taskFromHistory = history.getFirst();
 
