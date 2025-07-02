@@ -51,7 +51,9 @@ public class Main {
                     System.out.println("Good Bye");
                     return;
                 }
-                default -> { return; }
+                default -> {
+                    return;
+                }
             }
         }
     }

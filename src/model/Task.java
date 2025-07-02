@@ -5,13 +5,20 @@ import java.util.Objects;
 public class Task {
     protected int id;
     protected TaskStatus status;
-    protected final String title;
-    protected final String description;
+    protected String title;
+    protected String description;
 
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
         status = TaskStatus.NEW;
+    }
+
+    public Task(Task other) {
+        this.id = other.id;
+        this.title = other.title;
+        this.description = other.description;
+        this.status = other.status;
     }
 
     public int getId() {
@@ -55,5 +62,9 @@ public class Task {
     public String toString() {
         return "Task id: " + id + ", title: '" + title + "', description: '" +
                 description + "', status: '" + status + "'";
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
