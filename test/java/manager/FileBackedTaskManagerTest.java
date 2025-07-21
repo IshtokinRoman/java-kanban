@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FileBackedTaskManagerTest {
     @TempDir
-    File tempDir; // Временная папка для тестов
+    private File tempDir; // Временная папка для тестов
     private File tempFile;
     private FileBackedTaskManager manager;
 
