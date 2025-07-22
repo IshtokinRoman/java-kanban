@@ -1,5 +1,7 @@
 package model;
 
+import manager.TaskType;
+
 public class Subtask extends Task {
     private final int epicId;
 
@@ -28,5 +30,10 @@ public class Subtask extends Task {
             id++;
         }
         this.id = id;
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.SUBTASK;
     }
 }

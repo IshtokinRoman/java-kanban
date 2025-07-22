@@ -1,5 +1,7 @@
 package model;
 
+import manager.TaskType;
+
 import java.util.Objects;
 
 public class Task {
@@ -21,6 +23,18 @@ public class Task {
         this.status = other.status;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStatus(TaskStatus taskStatus) {
+        status = taskStatus;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public int getId() {
         return id;
     }
@@ -33,16 +47,12 @@ public class Task {
         return description;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setStatus(TaskStatus taskStatus) {
-        status = taskStatus;
-    }
-
     public TaskStatus getStatus() {
         return status;
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 
     @Override
@@ -62,9 +72,5 @@ public class Task {
     public String toString() {
         return "Task id: " + id + ", title: '" + title + "', description: '" +
                 description + "', status: '" + status + "'";
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 }
