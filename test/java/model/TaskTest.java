@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TaskTest {
     private Task task;
-    LocalDateTime startTime;
-    Duration duration;
+    private LocalDateTime startTime;
+    private Duration duration;
 
     @BeforeEach
     void setUp() {
