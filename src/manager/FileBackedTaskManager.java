@@ -8,14 +8,25 @@ import model.TaskStatus;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy");
+
     private final File file;
 
     public FileBackedTaskManager(File file) {
         this.file = file;
+    }
+
+    @Override
+    public Set<Task> getPrioritizedTasks() {
+        return super.getPrioritizedTasks();
     }
 
     @Override
@@ -40,8 +51,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     @Override
-    public void updateTask(Task task) {
-        super.updateTask(task);
+    public void updateTask(Task taskToUpdate) {
+        super.updateTask(taskToUpdate);
         save();
     }
 
@@ -69,7 +80,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     @Override
-    public ArrayList<Subtask> getSubtasksListByEpic(int epicId) {
+    public List<Subtask> getSubtasksListByEpic(int epicId) {
         return super.getSubtasksListByEpic(epicId);
     }
 
@@ -157,6 +168,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     private String toCsv(Task task) {
+        String startTime = task.getStartTime().format(formatter);
+        String duration = String.valueOf(task.getDuration().toMinutes());
+        String endTime = task.getEndTime().format(formatter);
         String epicId;
 
         if (task.getType() == TaskType.SUBTASK) {
@@ -164,8 +178,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         } else {
             epicId = "";
         }
-        return String.format("%d,%s,%s,%s,%s,%s",
-                task.getId(), task.getType(), task.getTitle(), task.getStatus(), task.getDescription(), epicId);
+        return String.format("%d,%s,%s,%s,%s,%s,%s,%s,%s",
+                task.getId(), task.getType(), task.getTitle(), task.getStatus(), task.getDescription(),
+                startTime, duration, endTime, epicId);
     }
 
     private static void fromCsv(FileBackedTaskManager manager, String line) {
@@ -183,11 +198,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         String tittle = items[2];
         TaskStatus status = TaskStatus.valueOf(items[3]);
         String description = items[4];
-        int epicId = -1;
+        LocalDateTime startTime = LocalDateTime.parse(items[5], formatter);
+        long durationInMinutes = Long.parseLong(items[6]);
+        Duration duration = Duration.ofMinutes(durationInMinutes);
 
-        if (items.length > 5 && !items[5].isEmpty()) {
+        int epicId = -1;
+        if (items.length > 8 && !items[8].isEmpty()) {
             try {
-                epicId = Integer.parseInt(items[5]);
+                epicId = Integer.parseInt(items[8]);
             } catch (Exception ex) {
                 System.out.println("Ошибка считывания поля epicId!");
             }
@@ -195,7 +213,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
         switch (type) {
             case TASK:
-                Task task = new Task(tittle, description);
+                Task task = new Task(tittle, description, duration, startTime);
                 task.setId(id);
                 task.setStatus(status);
                 manager.addTask(task);
@@ -207,7 +225,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                 manager.addEpic(epic);
                 break;
             case SUBTASK:
-                Subtask subtask = new Subtask(tittle, description, epicId);
+                Subtask subtask = new Subtask(tittle, description, epicId, duration, startTime);
                 subtask.setId(id);
                 subtask.setStatus(status);
                 manager.addSubtask(subtask);
