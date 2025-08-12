@@ -11,8 +11,8 @@ public class Epic extends Task {
     private LocalDateTime endTime;
 
     public Epic(String title, String description) {
-        super(title, description, Duration.ZERO, LocalDateTime.MAX);
-        endTime = LocalDateTime.MIN;
+        super(title, description, Duration.ofMinutes(0), LocalDateTime.of(3000,1,1,1,1));
+        endTime = LocalDateTime.of(1000,1,1,1,1);
     }
 
     public Epic(Epic other) {

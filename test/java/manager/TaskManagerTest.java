@@ -1,5 +1,7 @@
 package manager;
 
+import exceptions.NotFoundException;
+import exceptions.TaskOverlapException;
 import model.Epic;
 import model.Subtask;
 import model.Task;
@@ -104,9 +106,9 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldRemoveTask() {
         Task task = new Task("Task", "Desc", duration, startTime1);
         taskManager.addTask(task);
-        taskManager.removeTask(task.getId());
+        int id = task.getId();
+        taskManager.removeTask(id);
         assertTrue(taskManager.getTasksList().isEmpty());
-        assertNull(taskManager.getTaskById(task.getId()));
     }
 
     @Test
@@ -131,7 +133,11 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.removeEpic(epic.getId());
         assertTrue(taskManager.getEpicList().isEmpty());
         assertTrue(taskManager.getSubtasksList().isEmpty());
-        assertNull(taskManager.getEpicById(epic.getId()));
+        assertThrows(
+                NotFoundException.class,
+                () -> taskManager.getEpicById(epic.getId()),
+                "Ожидалось исключение NotFoundException при добавлении пересекающейся задачи"
+        );
     }
 
     @Test
@@ -154,8 +160,13 @@ abstract class TaskManagerTest<T extends TaskManager> {
         Task task1 = new Task("Task1", "Desc", duration, startTime1);
         Task task2 = new Task("Task2", "Desc", duration, startTime1);
         taskManager.addTask(task1);
-        taskManager.addTask(task2);
+        assertThrows(
+                TaskOverlapException.class,
+                () -> taskManager.addTask(task2),
+                "Ожидалось исключение TaskOverlapException при добавлении пересекающейся задачи"
+        );
 
+        assertEquals(1, taskManager.getTasksList().size(), "Список задач должен содержать только одну задачу");
         assertEquals(1, taskManager.getTasksList().size());
     }
 

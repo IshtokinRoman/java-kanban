@@ -1,5 +1,6 @@
 package manager;
 
+import exceptions.NotFoundException;
 import model.Epic;
 import model.Subtask;
 import model.Task;
@@ -54,8 +55,8 @@ class ManagersTest {
 
         taskManager.removeEpic(epic.getId());
 
-        assertNull(taskManager.getSubtaskById(subtask1.getId()), "Subtask1 должен быть удалён");
-        assertNull(taskManager.getSubtaskById(subtask2.getId()), "Subtask2 должен быть удалён");
+        assertThrows(NotFoundException.class, () -> taskManager.getSubtaskById(subtask1.getId()));
+        assertThrows(NotFoundException.class, () -> taskManager.getSubtaskById(subtask2.getId()));
     }
 
     @Test
